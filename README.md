@@ -1,111 +1,31 @@
-# Simple User Signup & Login Application
+ # DevOps Internship Task 2 – Creating a Simple Jenkins Pipeline for CI/CD
 
-### Introduction
-
-Welcome to this full-stack user authentication application. This project was built from the ground up to serve as a practical example of a secure, modern web application. It features a Python backend powered by the Flask framework and a dynamic, user-friendly frontend built with standard HTML, CSS, and JavaScript.
-
-**Project created by Mohd Azam Uddin.**
-
+## Elevate Labs: Empowering the Future of DevOps
+This project is a testament to the high-quality, hands-on learning experience provided by Elevate Labs. Their internship program is dedicated to empowering the next generation of DevOps professionals by offering practical, real-world challenges that build foundational skills and a deep understanding of modern software development practices.
 ---
-## What is this App?
+### Overview
+The objective of this task is to set up a basic Jenkins pipeline to automate the process of building and deploying an application. This task introduces Jenkins as a powerful automation server and demonstrates how to define a pipeline using a Jenkinsfile to create a reliable and repeatable CI/CD workflow.
 
-This application provides a fundamental user authentication system. Its core purpose is to allow new users to create a secure account and for existing users to sign in. It serves as a solid foundation for any web application that requires user management.
+### Objective
 
-**Key Features:**
-* Secure user registration with password hashing.
-* User login and a personalized welcome dashboard.
-* A clean, responsive user interface.
+* Set up a Jenkins instance (or use a cloud instance).
 
----
-## How It Was Built - The Journey
+* Create a Jenkinsfile to define the pipeline stages.
 
-This project started with a simple goal: create a functional signup system. The process evolved as we tackled common development challenges.
+* Configure Jenkins to trigger the pipeline on each code commit.
 
-#### 1. The Initial Backend
-The first version of the application was a simple **Flask** server, storing user data in a `users.json` file. This approach quickly led to an **"Internal Server Error"** due to file permission issues and the risk of data corruption.
+* Implement stages for build, test, and deploy.
 
-#### 2. Upgrading to a Real Database
-To fix the errors and make the application more stable, the backend was upgraded to use a proper **SQLite** database. The `Flask-SQLAlchemy` library was used to manage the database, which solved all the data storage problems.
+### Tools & Technologies
+* Jenkins – The core automation server for CI/CD.
 
-#### 3. Building the Frontend
-The user interface was built with standard **HTML**, **CSS**, and **vanilla JavaScript**. A simple **Node.js/Express** server is used to serve the `index.html` file and manage the local development environment.
+* Docker – Used for containerizing the application.
 
----
-## Containerization with Docker
+* Git – For version control and triggering the pipeline.
 
-To ensure the application runs reliably in any environment, it has been fully containerized using Docker.
-
-#### What is Containerization?
-Imagine a standardized shipping container that holds not just your application's code, but also the specific version of Python or Node.js it needs, all the required libraries, and the necessary system settings. This "box" can be run on any machine that has Docker installed, guaranteeing that the app will work the same way for a developer, a tester, or in a production environment. This solves the classic "it works on my machine" problem.
-
-#### Creating the Dockerfiles
-A `Dockerfile` is a blueprint for building a container image. This project uses two separate `Dockerfile`s for the backend and frontend, which detail the steps to package each service.
-
----
-## Automation with GitHub Actions CI/CD
-
-This project uses a fully automated CI/CD (Continuous Integration/Continuous Deployment) pipeline built with GitHub Actions.
-
-#### What is CI/CD and Why Use It?
-CI/CD is a modern software development practice that automates the process of building, testing, and deploying code.
-* **Continuous Integration (CI)** automatically tests the code every time a change is pushed. This catches bugs early and ensures that new code doesn't break existing features.
-* **Continuous Deployment (CD)** automatically builds the application and deploys it after it passes all the tests.
-
-We use this to save time, reduce human error, and ensure that only high-quality, tested code makes it to production.
-
-#### How the Pipeline Was Built
-The entire workflow is defined in a single YAML file located at `.github/workflows/main.yml`. This file contains all the instructions for the automated workflow, which runs on every push to the `main` branch to test, build, and push the Docker images to Docker Hub.
-
-#### Secrets and Variables
-To log in to Docker Hub securely, the pipeline uses encrypted secrets stored in the GitHub repository's settings (`Settings > Secrets and variables > Actions`).
-* **`DOCKERHUB_USERNAME`**: Stores the Docker Hub username.
-* **`DOCKERHUB_TOKEN`**: Stores a secure Docker Hub Access Token used as a password.
-
----
-## CI/CD with Jenkins
-
-As an alternative to GitHub Actions, this project also includes a CI/CD pipeline configured for **Jenkins**, one of the most popular and powerful open-source automation servers.
-
-#### How the Pipeline Was Built
-The entire Jenkins workflow is defined in the `Jenkinsfile` located in the project's root directory. This file uses a Declarative Pipeline syntax to define all the stages for building and testing the application.
-
-#### The Pipeline's Workflow: Step-by-Step
-When the pipeline is run in Jenkins (either manually or via a webhook), the following stages are executed:
-
-1.  **Checkout**: Jenkins automatically checks out the latest code from the Git repository.
-2.  **Test Backend**: This stage runs inside a temporary Docker container (`python:3.10-slim`). It executes the `pip install` command to get dependencies and then runs `flake8 .` to lint the Python code.
-3.  **Test Frontend**: This stage runs in a separate `node:18-alpine` container. It uses `npm ci` to install dependencies and `npx eslint .` to check the JavaScript code quality.
-4.  **Build & Push Backend**: If all tests pass, this stage uses Docker to build the backend image from its `Dockerfile`.
-5.  **Build & Push Frontend**: Finally, this stage builds the frontend image from its `Dockerfile`. Both build stages use `docker.withRegistry()` to securely log in to Docker Hub and push the new images.
-
-#### Secure Credential Management
-Instead of GitHub Secrets, Jenkins uses its built-in **Credentials Manager** (`Manage Jenkins > Credentials`). For this pipeline, a "Username with password" credential with the ID `dockerhub-token` was created to securely store the Docker Hub username and access token.
-
----
-## Technologies & Dependencies Used
-
-* **Backend**: Python, Flask, Flask-SQLAlchemy, Flask-CORS, Gunicorn
-* **Frontend**: HTML5, CSS3, Vanilla JavaScript, Node.js, Express.js
-* **Containerization**: Docker, Docker Compose
-* **CI/CD**: GitHub Actions, Jenkins
-
----
-## How to Run Locally
-
-The recommended way to run this application is with Docker Compose, as it handles both the frontend and backend setup automatically.
-
-1.  Clone this repository.
-2.  Ensure Docker and Docker Compose are installed and running.
-3.  From the project's root directory, run the command:
-    ```bash
-    docker-compose up --build
-    ```
-4.  Access the application in your web browser at `http://localhost:3000`.
-
----
-## Final Project Structure
+## Project Structure
 ```
-.
+
 ├── .github/
 │   └── workflows/
 │       └── main.yml
@@ -122,3 +42,92 @@ The recommended way to run this application is with Docker Compose, as it handle
 ├── Jenkinsfile
 └── README.md
 ```
+
+## Step-by-Step Implementation
+
+## 1. Install Jenkins
+Install Jenkins on a local machine or set up a cloud instance. Ensure Docker is also installed on the same machine or on a remote agent connected to Jenkins.
+
+## 2. Create the Jenkinsfile
+A Jenkinsfile is a text file that defines the Jenkins pipeline using either a Declarative or Scripted syntax. For this task, we will use a Declarative pipeline. The file must be named Jenkinsfile and placed in the root of the project repository.
+
+## Here is a sample Jenkinsfile with common stages:
+```
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                // You can add your build commands here, e.g.,
+                // sh 'docker build -t my-app .'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // You can add your test commands here, e.g.,
+                // sh 'docker run my-app npm test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // You can add your deployment commands here, e.g.,
+                // sh 'docker push my-app'
+                // sh 'ssh user@server "docker pull my-app && docker stop container && docker run -d -p 80:80 my-app"'
+            }
+        }
+    }
+}
+```
+
+## 3. Configure Jenkins Job
+Create a new "Pipeline" job in Jenkins.
+
+Configure the job to connect to your GitHub repository.
+
+In the "Pipeline" section, select "Pipeline script from SCM" and specify your Git repository URL.
+
+Set the script path to Jenkinsfile.
+
+Enable the "Poll SCM" option or configure a webhook to trigger the pipeline automatically on code commits.
+
+## 4. Trigger the Pipeline
+Commit and push changes to your repository. This will automatically trigger the Jenkins job. You can monitor the progress on the Jenkins dashboard and view the logs for each stage.
+
+# Learning Outcomes
+
+### By completing this task, you will:
+
+* Understand how to automate the deployment process with Jenkins.
+* Learn to create a Jenkinsfile for defining a pipeline.
+* Gain experience configuring Jenkins jobs for CI/CD.
+* Enhance your DevOps project portfolio.
+
+## Interview Questions to Practice
+1. What is Jenkins, and how is it used in CI/CD?
+
+2. What is a Jenkinsfile?
+
+3. How do you create and configure Jenkins pipelines?
+
+4. What are some common stages in a Jenkins pipeline?
+
+5. What is the difference between a declarative and scripted Jenkins pipeline?
+
+## Company Credit
+
+This task is created under the DevOps Internship Program by Elevate Labs. The company’s vision is to empower students and professionals with real-world DevOps expertise through hands-on training and mentorship.
+
+# Creator
+Name: Mohd Azam Uddin
+
+Role: DevOps Intern
+
+Contribution: Implemented a simple Jenkins pipeline for CI/CD, providing a foundational understanding of Jenkins automation. 
+
+---
